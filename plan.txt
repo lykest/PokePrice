@@ -1,0 +1,57 @@
+User supplies a .xls or .xlsx file in the format of:
+
+Column A        Column D [opt]          Column E [opt]
+Row 1 All Labels (Name... Type ... Markings ... EN count ... JP count ...)
+<Card name>     <English card count>    <Japanese card count>
+
+[opt] are not necessary, but the program will attempt to multiply the found
+market values with the number of cards specified.
+All columns except Columns A are optional.  Only names of pokemon are required.
+
+The script will search the Mavin (https://mavin.io) database to retrieve
+the estimated average market value, with the lowest and highest values
+also retrieved for listing which are sold.
+
+The search results generated from https://mavin.io/search?q=<card name>&bt=sold
+returns the useful attributes we can read from:
+
+#medianHiddenField
+    Contains the "value" attribute with the average price for the item
+    jQuery: $('#medianHiddenField').attr('value')
+#lowestWorthItemHeader
+    Contains the "data-sold" attribute with the lowest price sold
+    jQuery: $('#lowestWorthItemHeader').attr('data-sold')
+#highestWorthItemHeader
+    Contains the "data-sold" attribute with the highest price sold
+    jQuery: $('#highestWorthItemHeader').attr('data-sold')
+
+
+
+Assumptions:
+    If there is no English or Japanese card count for a given Card name,
+    assume 1 for English
+
+Program Steps:
+
+1.  Read and verify XLS contents:
+    First row are all assumed labels
+    Duplicate names are allowed
+
+2.  Perform a timed search using https://mavin.io
+        If no results are returned, continue processing other entries
+            Fill a 0.0 value for all values related to the card
+        Assume rate limiting, so sleep for two seconds
+
+3.  Write results
+        Write to a predetermined output XLSX:
+            Column A: Name of monster
+            Column B: Lowest price of one card
+            Column C: Highest price of one card
+            Column D: Average price of one card
+            Column E: Lowest price of all cards
+            Column F: Highest price of all cards
+            Column G: Average price of all cards
+
+        Place in two lines after the end of the document:
+            Total Average Price     ... Lowest ...      ... Highest ...
+                $x                      $x                  $x
