@@ -14,4 +14,5 @@ Only Name is required for practical functionality, as the program assumes EN as 
 
 Extraneous columns are ignored by the program.  Only the Name (first) column is required.
 
-![alt text](https://github.com/lykest/PokePrice/blob/master/results.png?raw=true)
+![PokePrice Results]
+(https://github.com/lykest/PokePrice/blob/master/results.png)
